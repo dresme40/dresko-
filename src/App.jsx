@@ -505,162 +505,128 @@ function Onboarding({onDone}){
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
     @keyframes toastSlide{0%{opacity:0;transform:translateX(-50%) translateY(-8px);}15%{opacity:1;transform:translateX(-50%) translateY(0);}82%{opacity:1;}100%{opacity:0;}}
     @keyframes fall{to{transform:translateY(110vh);opacity:0;}}
-    @keyframes floatUp{0%{transform:translateY(110vh) rotate(var(--r));opacity:0;}10%{opacity:1;}85%{opacity:0.6;}100%{transform:translateY(-20vh) rotate(var(--r));opacity:0;}}
-    @keyframes floatSide{0%{transform:translateX(-120px) rotate(var(--r));opacity:0;}10%{opacity:1;}90%{opacity:0.5;}100%{transform:translateX(calc(100vw + 120px)) rotate(var(--r));opacity:0;}}
-    @keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
-    @keyframes titleReveal{0%{opacity:0;transform:translateY(40px) skewY(3deg);}100%{opacity:1;transform:translateY(0) skewY(0deg);}}
-    @keyframes taglineReveal{0%{opacity:0;letter-spacing:0.4em;}100%{opacity:1;letter-spacing:0.15em;}}
-    @keyframes btnReveal{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
-    @keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
-    @keyframes rotateSlow{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+    @keyframes imgReveal{0%{opacity:0;transform:scale(1.04);}100%{opacity:1;transform:scale(1);}}
+    @keyframes titleSlide{0%{opacity:0;transform:translateY(32px);}100%{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
     *{box-sizing:border-box;margin:0;padding:0;}
     ::-webkit-scrollbar{display:none;}
     button{font-family:inherit;}
-    body{background:#080808;}
+    body{background:#FFFFFF;}
   `;
 
-  // Silhouettes SVG de vêtements — flottantes en arrière-plan
-  const SILHOUETTES = [
-    // Veste/Blazer
-    `<svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 10 L10 30 L5 90 L30 90 L30 50 L40 55 L50 50 L50 90 L75 90 L70 30 L60 10 L50 5 L40 15 L30 5 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/><path d="M40 15 L40 55" stroke="white" stroke-opacity="0.08" stroke-width="0.5"/></svg>`,
-    // T-shirt
-    `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M25 5 L5 25 L20 35 L20 75 L60 75 L60 35 L75 25 L55 5 L45 15 L35 15 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/></svg>`,
-    // Pantalon
-    `<svg viewBox="0 0 70 110" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5 L65 5 L60 55 L45 55 L35 110 L35 110 L25 55 L10 55 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/></svg>`,
-    // Sneaker
-    `<svg viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 35 Q10 20 30 18 L70 15 Q85 14 95 25 L95 38 Q70 45 40 45 Q15 45 5 35 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/><path d="M30 18 L35 5 L50 8 L45 18" fill="white" fill-opacity="0.04" stroke="white" stroke-opacity="0.1" stroke-width="0.5"/></svg>`,
-    // Chemise
-    `<svg viewBox="0 0 75 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 5 L8 20 L5 30 L18 35 L18 85 L57 85 L57 35 L70 30 L67 20 L53 5 L42 12 L37 8 L32 12 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/><line x1="37" y1="12" x2="37" y2="85" stroke="white" stroke-opacity="0.08" stroke-width="0.5"/></svg>`,
-    // Manteau long
-    `<svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 8 L8 28 L5 115 L35 115 L35 60 L40 65 L45 60 L45 115 L75 115 L72 28 L60 8 L50 3 L40 14 L30 3 Z" fill="white" fill-opacity="0.05" stroke="white" stroke-opacity="0.1" stroke-width="0.5"/></svg>`,
-    // Casquette
-    `<svg viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 35 Q10 10 40 8 Q70 10 70 35 L65 40 L15 40 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/><path d="M10 38 Q5 42 15 44 L65 40 L60 36" fill="white" fill-opacity="0.04" stroke="white" stroke-opacity="0.08" stroke-width="0.5"/></svg>`,
-    // Pull/Sweat
-    `<svg viewBox="0 0 80 85" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28 8 Q40 3 52 8 L70 25 L60 35 L58 80 L22 80 L20 35 L10 25 Z" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12" stroke-width="0.5"/></svg>`,
-  ];
-
-  // Générer les particules flottantes
-  const particles = Array.from({length:22},(_,i)=>({
-    id:i,
-    svgIndex: i % SILHOUETTES.length,
-    x: Math.random()*100,
-    delay: Math.random()*12,
-    duration: 8 + Math.random()*10,
-    size: 40 + Math.random()*80,
-    rotation: (Math.random()-0.5)*60,
-    side: i%3===0, // dérive latérale ou verticale
-  }));
+  // Photo Unsplash libre de droits — mannequin masculin éditorial
+  const HERO_URL = "https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=800&q=80&fit=crop";
 
   return(
-    <div style={{minHeight:"100vh",background:"#080808",display:"flex",flexDirection:"column",fontFamily:"-apple-system,'Helvetica Neue',Arial,sans-serif",position:"relative",overflow:"hidden"}}>
+    <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column",fontFamily:"-apple-system,'Helvetica Neue',Arial,sans-serif"}}>
       <style>{GLOBAL_CSS}</style>
 
-      {/* ─── FOND ANIMÉ — silhouettes flottantes ─── */}
-      <div style={{position:"absolute",inset:0,zIndex:0,overflow:"hidden",pointerEvents:"none"}}>
-        {particles.map(p=>(
-          <div key={p.id} style={{
-            position:"absolute",
-            left:`${p.x}%`,
-            bottom: p.side ? `${Math.random()*100}%` : "-20%",
-            width:p.size,
-            height:p.size*1.3,
-            "--r":`${p.rotation}deg`,
-            animation: p.side
-              ? `floatSide ${p.duration}s ${p.delay}s linear infinite`
-              : `floatUp ${p.duration}s ${p.delay}s linear infinite`,
-          }} dangerouslySetInnerHTML={{__html:SILHOUETTES[p.svgIndex]}}/>
-        ))}
+      {/* Écran 0 — Welcome Zara style */}
+      {step===0&&(
+        <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
 
-        {/* Vignette radiale pour profondeur */}
-        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, transparent 20%, rgba(8,8,8,0.85) 100%)"}}/>
-
-        {/* Ligne lumineuse horizontale animée */}
-        <div style={{position:"absolute",top:"50%",left:0,right:0,height:1,background:"linear-gradient(90deg, transparent, rgba(255,255,255,0.06), rgba(255,255,255,0.12), rgba(255,255,255,0.06), transparent)",animation:"pulse 4s ease-in-out infinite"}}/>
-      </div>
-
-      {/* ─── CONTENU PRINCIPAL ─── */}
-      {step===0?(
-        <div style={{position:"relative",zIndex:1,minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"0"}}>
-
-          {/* Logo top */}
-          <div style={{padding:"52px 36px 0",animation:"titleReveal 0.8s 0.1s both"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <span style={{fontSize:11,fontWeight:900,color:"rgba(255,255,255,0.9)",letterSpacing:"0.3em"}}>DRESKO</span>
-              <div style={{width:4,height:4,borderRadius:"50%",background:"rgba(255,255,255,0.3)"}}/>
-              <span style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:"0.15em",fontFamily:"'Courier New',monospace"}}>STYLE AI</span>
-            </div>
+          {/* Header discret */}
+          <div style={{position:"absolute",top:0,left:0,right:0,padding:"24px 28px",display:"flex",justifyContent:"space-between",alignItems:"center",zIndex:10}}>
+            <span style={{fontSize:13,fontWeight:900,color:T.black,letterSpacing:"0.1em"}}>DRESKO</span>
+            <div style={{width:28,height:1,background:T.pale}}/>
           </div>
 
-          {/* Titre central */}
-          <div style={{padding:"0 36px",textAlign:"left"}}>
-            {/* Ligne décorative */}
-            <div style={{width:32,height:1,background:"rgba(255,255,255,0.3)",marginBottom:20,animation:"titleReveal 0.8s 0.3s both"}}/>
+          {/* Grande photo mannequin — 62% de l'écran */}
+          <div style={{width:"100%",height:"62vh",overflow:"hidden",position:"relative",flexShrink:0}}>
+            <img
+              src={HERO_URL}
+              alt="Style masculin éditorial"
+              style={{
+                width:"100%",
+                height:"100%",
+                objectFit:"cover",
+                objectPosition:"center top",
+                animation:"imgReveal 1.2s ease both",
+                display:"block",
+              }}
+              onError={e=>{
+                e.target.style.display="none";
+                e.target.parentNode.style.background="#F5F5F5";
+              }}
+            />
+            {/* Gradient bas subtil */}
+            <div style={{position:"absolute",bottom:0,left:0,right:0,height:80,background:"linear-gradient(transparent,#FFFFFF)"}}/>
+          </div>
 
-            <div style={{animation:"titleReveal 0.9s 0.4s both"}}>
-              <h1 style={{fontSize:54,fontWeight:900,color:"#FFFFFF",lineHeight:1.0,letterSpacing:"-0.04em",margin:0,textShadow:"0 0 80px rgba(255,255,255,0.1)"}}>
+          {/* Contenu textuel */}
+          <div style={{flex:1,padding:"20px 28px 0",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+            <div style={{animation:"titleSlide 0.7s 0.4s both"}}>
+              {/* Grand titre */}
+              <h1 style={{
+                fontSize:50,
+                fontWeight:900,
+                color:T.black,
+                lineHeight:1.0,
+                letterSpacing:"-0.04em",
+                margin:"0 0 16px",
+              }}>
                 Ton<br/>styliste<br/>personnel.
               </h1>
-            </div>
 
-            <div style={{animation:"taglineReveal 1.2s 0.9s both",marginTop:20}}>
-              <p style={{fontSize:11,color:"rgba(255,255,255,0.4)",letterSpacing:"0.15em",fontFamily:"'Courier New',monospace",textTransform:"uppercase"}}>
+              {/* Séparateur */}
+              <div style={{width:32,height:1.5,background:T.black,margin:"0 0 12px"}}/>
+
+              {/* Tagline */}
+              <p style={{
+                fontSize:11,
+                color:T.mid,
+                letterSpacing:"0.12em",
+                fontFamily:"'Courier New',monospace",
+                textTransform:"uppercase",
+                animation:"fadeIn 0.8s 0.9s both",
+                opacity:0,
+              }}>
                 Quel que soit ton style.
               </p>
             </div>
-          </div>
 
-          {/* Footer avec CTA */}
-          <div style={{padding:"0 36px 56px",animation:"btnReveal 0.8s 1.2s both"}}>
-            {/* Description */}
-            <p style={{color:"rgba(255,255,255,0.35)",fontSize:12,lineHeight:1.8,marginBottom:32,maxWidth:300}}>
-              DRESKO analyse ton dressing, compose tes tenues chaque matin et t'inspire des looks dans tes marques préférées.
-            </p>
+            {/* CTA */}
+            <div style={{paddingBottom:52,animation:"fadeIn 0.8s 1.1s both",opacity:0}}>
+              <button onClick={next} style={{
+                width:"100%",
+                background:T.black,
+                color:T.white,
+                border:"none",
+                padding:"18px",
+                fontSize:10,
+                fontFamily:"'Courier New',monospace",
+                letterSpacing:"0.2em",
+                cursor:"pointer",
+                fontWeight:700,
+                transition:"opacity 0.2s",
+              }}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+                onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
+                Commencer →
+              </button>
 
-            {/* Bouton CTA premium */}
-            <button onClick={next} style={{
-              width:"100%",
-              background:"linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))",
-              border:"1px solid rgba(255,255,255,0.2)",
-              color:"#FFFFFF",
-              padding:"18px 24px",
-              fontSize:11,
-              fontFamily:"'Courier New',monospace",
-              letterSpacing:"0.2em",
-              cursor:"pointer",
-              backdropFilter:"blur(10px)",
-              WebkitBackdropFilter:"blur(10px)",
-              position:"relative",
-              overflow:"hidden",
-              transition:"all 0.3s",
-            }}
-              onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.18)";e.currentTarget.style.borderColor="rgba(255,255,255,0.4)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background="linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))";e.currentTarget.style.borderColor="rgba(255,255,255,0.2)";}}>
-              {/* Shimmer effect */}
-              <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)",backgroundSize:"200% 100%",animation:"shimmer 3s linear infinite",pointerEvents:"none"}}/>
-              <span style={{position:"relative",zIndex:1}}>Commencer →</span>
-            </button>
-
-            {/* Indicateur bas */}
-            <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:24}}>
-              {[0,1,2,3,4].map(i=>(
-                <div key={i} style={{width:i===0?20:5,height:2,background:i===0?"rgba(255,255,255,0.6)":"rgba(255,255,255,0.15)",transition:"all 0.3s",borderRadius:1}}/>
-              ))}
+              {/* Dots indicateurs */}
+              <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:18}}>
+                {[0,1,2,3,4].map(i=>(
+                  <div key={i} style={{width:i===0?24:6,height:2,background:i===0?T.black:T.light,borderRadius:1,transition:"all 0.3s"}}/>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      ):(
-        <>
-          {/* Header pour les autres étapes — fond blanc */}
-          <div style={{padding:"20px 32px",borderBottom:`1px solid ${T.line}`,display:"flex",justifyContent:"space-between",alignItems:"center",background:T.white,position:"relative",zIndex:1}}>
-            <span style={{fontSize:15,fontWeight:900,color:T.black,letterSpacing:"0.08em"}}>DRESKO</span>
-            <Micro color={T.pale}>{step+1} / 5</Micro>
-          </div>
-        </>
       )}
 
       {/* Contenu étapes 1-4 — fond blanc */}
       {step>0&&(
-      <div style={{flex:1,background:T.white,display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"none":"translateY(16px)",transition:"all 0.22s ease",overflow:"hidden",position:"relative",zIndex:1}}>
+      <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column"}}>
+
+        {/* Header étapes */}
+        <div style={{padding:"20px 28px",borderBottom:`1px solid ${T.line}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+          <span style={{fontSize:13,fontWeight:900,color:T.black,letterSpacing:"0.1em"}}>DRESKO</span>
+          <Micro color={T.pale}>{step+1} / 5</Micro>
+        </div>
+
+      <div style={{flex:1,display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"none":"translateY(16px)",transition:"all 0.22s ease",overflow:"hidden"}}>
 
         {/* Écran 1 — Styles */}
         {step===1&&(
@@ -757,11 +723,9 @@ function Onboarding({onDone}){
           </div>
         )}
       </div>
-      )}
 
       {/* Footer — fond blanc, visible étapes 1-4 */}
-      {step>0&&(
-      <div style={{padding:"20px 32px 44px",borderTop:`1px solid ${T.line}`,background:T.white,position:"relative",zIndex:1}}>
+      <div style={{padding:"20px 28px 44px",borderTop:`1px solid ${T.line}`,background:T.white,flexShrink:0}}>
         {err&&<div style={{marginBottom:10,textAlign:"center"}}><Micro color={T.red} size={9}>{err}</Micro></div>}
         <div style={{display:"flex",gap:6,marginBottom:22}}>
           {[0,1,2,3,4].map(i=>(
@@ -771,7 +735,8 @@ function Onboarding({onDone}){
         <BtnPrimary onClick={next}>
           {step===4?"📸 Scanner mes premières pièces →":"Suivant →"}
         </BtnPrimary>
-        {step>0&&<button onClick={()=>go(step-1)} style={{width:"100%",background:"none",border:"none",color:T.pale,padding:"12px",fontSize:9,fontFamily:"'Courier New',monospace",letterSpacing:"0.12em",cursor:"pointer",marginTop:6}}>← Retour</button>}
+        <button onClick={()=>go(step-1)} style={{width:"100%",background:"none",border:"none",color:T.pale,padding:"12px",fontSize:9,fontFamily:"'Courier New',monospace",letterSpacing:"0.12em",cursor:"pointer",marginTop:6}}>← Retour</button>
+      </div>
       </div>
       )}
     </div>
