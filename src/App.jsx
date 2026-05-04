@@ -514,79 +514,107 @@ function Onboarding({onDone}){
     body{background:#FFFFFF;}
   `;
 
-  // Photo Unsplash libre de droits — mannequin masculin éditorial
-  const HERO_URL = "https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=800&q=80&fit=crop";
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  const [heroError, setHeroError] = useState(false);
+  // Tente Hero.jpg puis hero.jpg (sensibilité casse Vercel)
+  const [heroSrc, setHeroSrc] = useState("/Hero.jpeg");
 
   return(
     <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column",fontFamily:"-apple-system,'Helvetica Neue',Arial,sans-serif"}}>
       <style>{GLOBAL_CSS}</style>
 
-      {/* Écran 0 — Welcome Zara style */}
+      {/* Écran 0 — Welcome style éditorial Zara */}
       {step===0&&(
-        <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
+        <div style={{minHeight:"100vh",background:T.white,display:"flex",flexDirection:"column",position:"relative"}}>
 
-          {/* Header discret */}
-          <div style={{position:"absolute",top:0,left:0,right:0,padding:"24px 28px",display:"flex",justifyContent:"space-between",alignItems:"center",zIndex:10}}>
-            <span style={{fontSize:13,fontWeight:900,color:T.black,letterSpacing:"0.1em"}}>DRESKO</span>
-            <div style={{width:28,height:1,background:T.pale}}/>
+          {/* Header fixe */}
+          <div style={{position:"absolute",top:0,left:0,right:0,padding:"28px 32px",display:"flex",justifyContent:"space-between",alignItems:"center",zIndex:10}}>
+            <span style={{fontSize:12,fontWeight:900,color:heroLoaded&&!heroError?T.white:T.black,letterSpacing:"0.14em",transition:"color 0.5s"}}>DRESKO</span>
+            <Micro color={heroLoaded&&!heroError?"rgba(255,255,255,0.5)":T.pale} size={8}>Style AI</Micro>
           </div>
 
-          {/* Grande photo mannequin — 62% de l'écran */}
-          <div style={{width:"100%",height:"62vh",overflow:"hidden",position:"relative",flexShrink:0}}>
-            <img
-              src={HERO_URL}
-              alt="Style masculin éditorial"
-              style={{
-                width:"100%",
-                height:"100%",
-                objectFit:"cover",
-                objectPosition:"center top",
-                animation:"imgReveal 1.2s ease both",
-                display:"block",
-              }}
-              onError={e=>{
-                e.target.style.display="none";
-                e.target.parentNode.style.background="#F5F5F5";
-              }}
-            />
-            {/* Gradient bas subtil */}
-            <div style={{position:"absolute",bottom:0,left:0,right:0,height:80,background:"linear-gradient(transparent,#FFFFFF)"}}/>
+          {/* Zone photo — pleine largeur, 65vh */}
+          <div style={{width:"100%",height:"65vh",position:"relative",overflow:"hidden",background:T.ghost,flexShrink:0}}>
+
+            {/* Image principale */}
+            {!heroError&&(
+              <img
+                src={heroSrc}
+                alt=""
+                onLoad={()=>setHeroLoaded(true)}
+                onError={()=>{
+                  if(heroSrc==="/Hero.jpeg") setHeroSrc("/Hero.jpg");
+                  else setHeroError(true);
+                }}
+                style={{
+                  width:"100%",
+                  height:"100%",
+                  objectFit:"cover",
+                  objectPosition:"center 20%",
+                  display:"block",
+                  opacity:heroLoaded?1:0,
+                  transition:"opacity 0.8s ease",
+                  animation:heroLoaded?"imgReveal 1.2s ease both":"none",
+                }}
+              />
+            )}
+
+            {/* Fallback élégant si photo absente */}
+            {(heroError||!heroLoaded)&&(
+              <div style={{
+                position:"absolute",inset:0,
+                background:"linear-gradient(160deg, #F8F8F8 0%, #EEEEEE 50%, #F5F5F5 100%)",
+                display:"flex",flexDirection:"column",
+                alignItems:"center",justifyContent:"center",gap:16,
+              }}>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,opacity:0.15}}>
+                  {["👔","👖","🧥","👟"].map((e,i)=>(
+                    <div key={i} style={{width:64,height:80,background:T.line,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28}}>{e}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Gradient bas — fondu vers blanc */}
+            <div style={{position:"absolute",bottom:0,left:0,right:0,height:120,background:"linear-gradient(transparent, #FFFFFF)",pointerEvents:"none"}}/>
+
+            {/* Gradient haut — pour lisibilité du header */}
+            {heroLoaded&&!heroError&&(
+              <div style={{position:"absolute",top:0,left:0,right:0,height:100,background:"linear-gradient(rgba(0,0,0,0.3), transparent)",pointerEvents:"none"}}/>
+            )}
           </div>
 
-          {/* Contenu textuel */}
-          <div style={{flex:1,padding:"20px 28px 0",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-            <div style={{animation:"titleSlide 0.7s 0.4s both"}}>
-              {/* Grand titre */}
+          {/* Contenu bas */}
+          <div style={{flex:1,padding:"16px 32px 0",display:"flex",flexDirection:"column",justifyContent:"space-between",animation:"titleSlide 0.6s 0.3s both",opacity:0}}>
+
+            <div>
+              {/* Titre massif */}
               <h1 style={{
-                fontSize:50,
+                fontSize:52,
                 fontWeight:900,
                 color:T.black,
-                lineHeight:1.0,
+                lineHeight:0.95,
                 letterSpacing:"-0.04em",
-                margin:"0 0 16px",
+                margin:"0 0 14px",
               }}>
                 Ton<br/>styliste<br/>personnel.
               </h1>
 
-              {/* Séparateur */}
-              <div style={{width:32,height:1.5,background:T.black,margin:"0 0 12px"}}/>
-
-              {/* Tagline */}
-              <p style={{
-                fontSize:11,
-                color:T.mid,
-                letterSpacing:"0.12em",
-                fontFamily:"'Courier New',monospace",
-                textTransform:"uppercase",
-                animation:"fadeIn 0.8s 0.9s both",
-                opacity:0,
-              }}>
-                Quel que soit ton style.
-              </p>
+              {/* Ligne + tagline */}
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <div style={{width:24,height:1.5,background:T.black,flexShrink:0}}/>
+                <span style={{
+                  fontSize:9,
+                  color:T.mid,
+                  letterSpacing:"0.14em",
+                  fontFamily:"'Courier New',monospace",
+                  textTransform:"uppercase",
+                }}>Quel que soit ton style.</span>
+              </div>
             </div>
 
             {/* CTA */}
-            <div style={{paddingBottom:52,animation:"fadeIn 0.8s 1.1s both",opacity:0}}>
+            <div style={{paddingBottom:48}}>
               <button onClick={next} style={{
                 width:"100%",
                 background:T.black,
@@ -598,6 +626,7 @@ function Onboarding({onDone}){
                 letterSpacing:"0.2em",
                 cursor:"pointer",
                 fontWeight:700,
+                marginBottom:20,
                 transition:"opacity 0.2s",
               }}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
@@ -605,10 +634,10 @@ function Onboarding({onDone}){
                 Commencer →
               </button>
 
-              {/* Dots indicateurs */}
-              <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:18}}>
+              {/* Dots */}
+              <div style={{display:"flex",justifyContent:"center",gap:6}}>
                 {[0,1,2,3,4].map(i=>(
-                  <div key={i} style={{width:i===0?24:6,height:2,background:i===0?T.black:T.light,borderRadius:1,transition:"all 0.3s"}}/>
+                  <div key={i} style={{width:i===0?22:5,height:2,background:i===0?T.black:T.line,borderRadius:1}}/>
                 ))}
               </div>
             </div>
