@@ -530,7 +530,7 @@ function Onboarding({onDone}){
           {/* Header fixe */}
           <div style={{position:"absolute",top:0,left:0,right:0,padding:"28px 32px",display:"flex",justifyContent:"space-between",alignItems:"center",zIndex:10}}>
             <span style={{fontSize:12,fontWeight:900,color:heroLoaded&&!heroError?T.white:T.black,letterSpacing:"0.14em",transition:"color 0.5s"}}>DRESKO</span>
-            <Micro color={heroLoaded&&!heroError?"rgba(255,255,255,0.5)":T.pale} size={8}>Style AI</Micro>
+            
           </div>
 
           {/* Zone photo — pleine largeur, 65vh */}
